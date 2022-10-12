@@ -142,4 +142,14 @@ public class UserServiceTest {
         User actual = userService.getUserByEmail(emailToExtract);
         Assertions.assertEquals(expected,actual);
     }
+
+    @DisplayName("Check get user by non-registered email.")
+    @Test
+    public  void checkGetUserByWrongEmail(){
+        String emailToExtract = "random@email.com";
+        User expected = new User("Ola","Burger","ola@email.com","pass",null);
+        userService.addUser(expected);
+        User actual = userService.getUserByEmail(emailToExtract);
+        Assertions.assertNull(actual);
+    }
 }

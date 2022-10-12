@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
      * NULL - if no such user is found.
      * */
     public User getUserByEmail(String email){
-        User result =  users.stream().filter(user1 -> user1.getEmail().equals(email)).findFirst().get();
+        User result =  users.stream().filter(user1 -> user1.getEmail().equals(email)).findFirst().orElse(null);
         return  result;
     }
 
