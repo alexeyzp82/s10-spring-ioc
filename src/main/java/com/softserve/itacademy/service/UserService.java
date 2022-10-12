@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.softserve.itacademy.model.User;
 
+
 public interface UserService {
     
     User addUser(User user);
