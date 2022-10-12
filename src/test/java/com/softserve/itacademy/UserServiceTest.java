@@ -52,8 +52,8 @@ public class UserServiceTest {
     @DisplayName("Checks if valid user adds to the list of users.")
     @Test
     public void checkAddUser() {
-        User user = new User("Andrew","Collins","acollins@mail.com","pass",null);
-        User expected = new User("Andrew","Collins","acollins@mail.com","pass",null);
+        User user = new User("Ben","Barnes","ben@mail.com","pass",null);
+        User expected = new User("Ben","Barnes","ben@mail.com","pass",null);
         User actual = userService.addUser(user);
         Assertions.assertEquals(expected, actual, "Check message");
     }
@@ -95,7 +95,6 @@ public class UserServiceTest {
         Assertions.assertNull(actual);
     }
 
-    //TODO : delete valid user
 
     @DisplayName("Delete  existing user.")
     @Test
@@ -107,10 +106,9 @@ public class UserServiceTest {
 
         userService.deleteUser(user1);
         boolean contains = userService.getAll().contains(user1);
-        Assertions.assertTrue(!contains);
+        Assertions.assertFalse(contains);
     }
 
-    //TODO : delete invalid user
     @DisplayName("Delete non-existing user.")
     @Test
     public  void checkDeleteNonExistentUser() {
@@ -119,12 +117,9 @@ public class UserServiceTest {
         userService.addUser(user1);
         userService.addUser(user2);
         int sizeBeforeDelete  = userService.getAll().size();
-
         User randomUser = new User("Harry","Johnson","john@mail.com","password",null);
         userService.deleteUser(randomUser);
         int sizeAfterDelete = userService.getAll().size();
-
         assertEquals(sizeBeforeDelete,sizeAfterDelete);
     }
-
 }

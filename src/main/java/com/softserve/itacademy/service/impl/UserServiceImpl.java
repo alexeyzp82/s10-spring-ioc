@@ -15,7 +15,6 @@ public class UserServiceImpl implements UserService {
     private List<User> users;
 
     public UserServiceImpl() {
-        //TODO : check if we should move this from constructor?
         users = new ArrayList<>();
     }
 
@@ -43,7 +42,7 @@ public class UserServiceImpl implements UserService {
      *             Null values  and ""  as one of the User element arguments will be ignored and old value will remain.
      * @return
      * User - newly updated user that was updated returned from list of all users.
-     * Null - no such user is registered with this email, cannot update user info.
+     * NULL - no such user is registered with this email, cannot update user info.
      * */
     public User updateUser(User user) {
         for (User x : getAll()) {
