@@ -102,7 +102,7 @@ public class User {
      * */
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, password, myTodos);
+        return Objects.hash(/*firstName, lastName,*/email/*, password, myTodos*/);
     }
 
 }
