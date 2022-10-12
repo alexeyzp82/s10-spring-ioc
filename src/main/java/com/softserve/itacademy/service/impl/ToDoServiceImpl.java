@@ -1,6 +1,7 @@
 package com.softserve.itacademy.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,32 +22,71 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     public ToDo addTodo(ToDo todo, User user) {
-        // TODO
-        return null;
+        if (userService.getAll()
+            .stream()
+            .flatMap(x -> x.getMyTodos().stream())
+            .anyMatch(todo::equals))
+            return null;
+
+        User oldUser = userService.getAll()
+            .stream()
+            .filter(user::equals)
+            .findFirst()
+            .orElse(null);
+
+        if (oldUser == null)
+            return null;
+
+        oldUser.getMyTodos().add(todo);
+        return todo;
     }
 
     public ToDo updateTodo(ToDo todo) {
-        // TODO
-        return null;
+        ToDo oldToDo = userService.getAll()
+            .stream()
+            .flatMap(x -> x.getMyTodos().stream())
+            .filter(todo::equals)
+            .findFirst()
+            .orElse(null);
+
+        if (oldToDo == null)
+            return null;
+
+        oldToDo.setCreatedAt(todo.getCreatedAt());
+        oldToDo.setOwner(todo.getOwner());
+        oldToDo.setTasks(todo.getTasks());
+        return oldToDo;
     }
 
     public void deleteTodo(ToDo todo) {
-        // TODO
+        for (User user : userService.getAll())
+            if (user.getMyTodos().removeIf(x -> x.equals(todo)))
+                break;
     }
 
     public List<ToDo> getAll() {
-        // TODO
-        return null;
+        return userService.getAll()
+            .stream()
+            .flatMap(x -> x.getMyTodos().stream())
+            .collect(Collectors.toList());
     }
 
     public List<ToDo> getByUser(User user) {
-        // TODO
-        return null;
+        User oldUser = userService.getAll()
+            .stream()
+            .filter(user::equals)
+            .findFirst()
+            .orElse(null);
+
+        return oldUser == null ? null : oldUser.getMyTodos();
     }
 
     public ToDo getByUserTitle(User user, String title) {
-        // TODO
-        return null;
+        List<ToDo> toDoList = getByUser(user);
+        return toDoList == null ? null : toDoList.stream()
+            .filter(x -> x.getTitle().equals(title))
+            .findFirst()
+            .orElse(null);
     }
 
 }
