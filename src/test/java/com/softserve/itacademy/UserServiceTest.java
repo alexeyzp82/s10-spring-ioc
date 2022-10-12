@@ -1,18 +1,12 @@
 package com.softserve.itacademy;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.UserService;
 
 import java.lang.reflect.Method;
-
 import static org.junit.Assert.*;
 
 
@@ -25,6 +19,11 @@ public class UserServiceTest {
         AnnotationConfigApplicationContext annotationConfigContext = new AnnotationConfigApplicationContext(Config.class);
         userService = annotationConfigContext.getBean(UserService.class);
         annotationConfigContext.close();
+    }
+
+    @BeforeEach
+    public void setUp(){
+        userService.getAll().clear();
     }
 
     @DisplayName("Check that User class implements all necessary methods.")
@@ -60,8 +59,8 @@ public class UserServiceTest {
     @DisplayName("Adding user with already registered email.")
     @Test
     public void checkAddExistingUserWithException(){
-        User user = new User("Andrew","Collins","acollins@mail.com","pass",null);
-        User user2 = new User("AndrewDUB","CollinsDUB","acollins@mail.com","pass",null);
+        User user = new User("Ivan","Berd","ivan@mail.com","pass",null);
+        User user2 = new User("IvanDUB","BerdDUB","ivan@mail.com","pass",null);
         userService.addUser(user);
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             userService.addUser(user2);
@@ -96,8 +95,8 @@ public class UserServiceTest {
     @DisplayName("Check update of non-existent user.")
     @Test
     public  void checkUpdateNonExistentUser() {
-        User user1 = new User("Andrew","Collins","acollins@mail.com","pass",null);
-        User user2 = new User("Anna","Holland","anna@mail.com","pass",null);
+        User user1 = new User("Olha","Clooney","olga23@mail.com","pass",null);
+        User user2 = new User("Iryna","Valley","iryna4646@mail.com","pass",null);
         User userUpd = new User("Tonny","Connar","unknown@mail.com","newPassword",null);
         userService.addUser(user1);
         userService.addUser(user2);
@@ -109,8 +108,8 @@ public class UserServiceTest {
     @DisplayName("Delete  existing user.")
     @Test
     public  void checkDeleteValidUser() {
-        User user1 = new User("Andrew","Collins","acollins@mail.com","pass",null);
-        User user2 = new User("Anna","Holland","anna@mail.com","pass",null);
+        User user1 = new User("Taras","Pool","taras@mail.com","pass",null);
+        User user2 = new User("Mike","Musk","mike5674@mail.com","pass",null);
         userService.addUser(user1);
         userService.addUser(user2);
 
@@ -147,7 +146,7 @@ public class UserServiceTest {
     @Test
     public  void checkGetUserByWrongEmail(){
         String emailToExtract = "random@email.com";
-        User expected = new User("Ola","Burger","ola@email.com","pass",null);
+        User expected = new User("Mike","Vale","mike68754@email.com","pass",null);
         userService.addUser(expected);
         User actual = userService.getUserByEmail(emailToExtract);
         Assertions.assertNull(actual);
