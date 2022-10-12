@@ -25,15 +25,29 @@ public class UserServiceImpl implements UserService {
      * NULL -  in case our user cannot be added because User with same email already exists.
      * User -  object that was successfully added.
      * */
+//    public User addUser(User user) {
+//        for(User u : this.users){
+//            if(u.getEmail().equals(user.getEmail()))
+//                return null;
+//        }
+//        //If no user with same email was found
+//        users.add(user);
+//        return user;
+//    }
+
     public User addUser(User user) {
-        for(User u : this.users){
-            if(u.getEmail().equals(user.getEmail()))
-                return null;
-        }
-        //If no user with same email was found
+        boolean isPresentEmail = users.stream().anyMatch(user1 -> user1.getEmail().equals(user.getEmail()));
+        if(user == null )
+            throw new IllegalArgumentException(" User is null. Cannot be added.");
+
+        if (isPresentEmail == true)
+            throw new IllegalArgumentException(" User [ " + user.getFirstName() +","+ user.getLastName() + " ]  already present in users list. ");
+
         users.add(user);
         return user;
     }
+
+
 
 
     @Override
@@ -83,6 +97,17 @@ public class UserServiceImpl implements UserService {
      * */
     public List<User> getAll() {
         return this.users;
+    }
+
+    /**
+     * Allows search User by email
+     * @return
+     * User -  with email corresponding to parameter
+     * NULL - if no such user is found.
+     * */
+    public User getUserByEmail(String email){
+        User result =  users.stream().filter(user1 -> user1.getEmail().equals(email)).findFirst().get();
+        return  result;
     }
 
 }

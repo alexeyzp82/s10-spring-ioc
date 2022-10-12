@@ -1,6 +1,5 @@
 package com.softserve.itacademy;
 
-import com.softserve.itacademy.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -13,11 +12,11 @@ import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.UserService;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
 
+//@RunWith(JUnitPlatform.class)
 public class UserServiceTest {
     private static UserService userService;
 
@@ -60,14 +59,25 @@ public class UserServiceTest {
 
     @DisplayName("Adding user with already registered email.")
     @Test
-    public void checkAddUserWithDublicateEmail() {
+    public void checkAddExistingUserWithException(){
         User user = new User("Andrew","Collins","acollins@mail.com","pass",null);
         User user2 = new User("AndrewDUB","CollinsDUB","acollins@mail.com","pass",null);
         userService.addUser(user);
-        User actual = userService.addUser(user2);
-        // cannot add user with the same email therefor null is returned.
-        assertNull(actual);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            userService.addUser(user2);
+        });
     }
+
+//    @DisplayName("Adding user with already registered email.")
+//    @Test
+//    public void checkAddUserWithDublicateEmail() {
+//        User user = new User("Andrew","Collins","acollins@mail.com","pass",null);
+//        User user2 = new User("AndrewDUB","CollinsDUB","acollins@mail.com","pass",null);
+//        userService.addUser(user);
+//        User actual = userService.addUser(user2);
+//        // cannot add user with the same email therefor null is returned.
+//        assertNull(actual);
+//    }
 
 
     @DisplayName("Check update of existent user.")
@@ -121,5 +131,15 @@ public class UserServiceTest {
         userService.deleteUser(randomUser);
         int sizeAfterDelete = userService.getAll().size();
         assertEquals(sizeBeforeDelete,sizeAfterDelete);
+    }
+
+    @DisplayName("Check get user by email.")
+    @Test
+    public  void checkGetUserByEmail(){
+        String emailToExtract = "ola@email.com";
+        User expected = new User("Ola","Burger","ola@email.com","pass",null);
+        userService.addUser(expected);
+        User actual = userService.getUserByEmail(emailToExtract);
+        Assertions.assertEquals(expected,actual);
     }
 }
