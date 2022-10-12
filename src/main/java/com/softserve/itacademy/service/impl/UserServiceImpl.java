@@ -2,7 +2,6 @@ package com.softserve.itacademy.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.stereotype.Service;
 
@@ -10,8 +9,92 @@ import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.UserService;
 
 
-/**Artem Lysiak — 10/09/2022
- Яка логіка має бути в методі updateUser(User user)?
+@Service
+public class UserServiceImpl implements UserService {
+
+    private List<User> users;
+
+    public UserServiceImpl() {
+        //TODO : check if we should move this from constructor?
+        users = new ArrayList<>();
+    }
+
+    @Override
+    /**
+     * Adds user based on email as identifier.
+     * @return
+     * NULL -  in case our user cannot be added because User with same email already exists.
+     * User -  object that was successfully added.
+     * */
+    public User addUser(User user) {
+        for(User u : this.users){
+            if(u.getEmail().equals(user.getEmail()))
+                return null;
+        }
+        //If no user with same email was found
+        users.add(user);
+        return user;
+    }
+
+
+    @Override
+    /**
+     * @param User user might have null or empty string passed as values on the fields that it does not want to change.
+     *             Null values  and ""  as one of the User element arguments will be ignored and old value will remain.
+     * @return
+     * User - newly updated user that was updated returned from list of all users.
+     * Null - no such user is registered with this email, cannot update user info.
+     * */
+    public User updateUser(User user) {
+        for (User x : getAll()) {
+             if (x.getEmail().equals(user.getEmail())) {
+                 x.setFirstName(user.getFirstName());
+                 x.setLastName(user.getLastName());
+                 x.setPassword(user.getPassword());
+                 x.setMyTodos(user.getMyTodos());
+                 return x;
+            }
+        }
+
+      //Update using stream code
+//        users.stream().filter(x -> x.getEmail().equals(user.getEmail()))
+//                .findFirst()
+//                .ifPresent( x-> {
+//                    x.setFirstName(user.getFirstName());
+//                    x.setLastName(user.getLastName());
+//                    x.setPassword(user.getPassword());
+//                    x.setMyTodos(user.getMyTodos());
+//
+//                });
+        return null;
+    }
+
+    @Override
+    /**
+     * Removes user from the List based on email.
+     * */
+    public void deleteUser(User user) {
+        this.users.removeIf(u -> u.getEmail().equals(user.getEmail()));
+    }
+
+
+    @Override
+    /**
+     * @return list of all users field.
+     * */
+    public List<User> getAll() {
+        return this.users;
+    }
+
+}
+
+
+
+
+/**
+ * TODO:
+ * Artem Lysiak — 10/09/2022
+ *Яка логіка має бути в методі updateUser(User user)?
  Цей юзер в параметрі це є вже апдейтнутий юзер? Якщо так то по якому значенню я маю шукати юзера в списку
  якого я маю оновити цим юзером?
  Olha_Shutylieva — 10/09/2022
@@ -40,7 +123,6 @@ import com.softserve.itacademy.service.UserService;
  все вірно, вам треба реалізувати service layer який працює з сутностями
  і реалізувати крад операції. все те покрити тестами
 
-
  Vasyl_Bazhan — 10/09/2022
  створюєте інтерфейс
  public interface UserService {
@@ -56,8 +138,6 @@ import com.softserve.itacademy.service.UserService;
 
  Інші по анології
 
-
-
  Є питання стосовно методу UpdateUser у класі UserServiceImp.
  А саме яке поле в нас незмінне, тобто якщо ми перейдемо вже нового юзера,
  як саме ми маємо знайти юзера у листі, якого ми маємо обновити
@@ -71,79 +151,4 @@ import com.softserve.itacademy.service.UserService;
  Дякую! Так і зробимо
  Olha_Shutylieva — Yesterday at 2:46 PM
  Самі вирішуєте, але найоптимальніше брати емейл
-
-
-
  */
-@Service
-public class UserServiceImpl implements UserService {
-
-    private List<User> users;
-
-    public UserServiceImpl() {
-        //TODO : check where we should get this list from constructor?
-        users = new ArrayList<>();
-    }
-
-
-    @Override
-    /**
-     * Adds user based on email as identifier.
-     * @return
-     * NULL -  in case our user cannot be added because User with same email already exists.
-     * User -  object that was successfully added.
-     * */
-    public User addUser(User user) {
-        for(User u : this.users){
-            if(u.getEmail().equals(user.getEmail()))
-                return null;
-        }
-        //If no user with same email was found
-        users.add(user);
-        return user;
-    }
-
-
-    @Override
-    /**
-     * @param User user might have null values on the fields that it does not want to change.
-     *             Null values passed as one of the User element arguments will be ignored and old values will remain.
-     * @return
-     * User - newly updated user that was updated from list.
-     * Null - no such user is registered with this email, cannot update user info.
-     * */
-    public User updateUser(User user) {
-        for (User x : getAll()) {
-             if (x.getEmail().equals(user.getEmail())) {
-                 x.setFirstName(user.getFirstName());
-                 x.setLastName(user.getLastName());
-                 x.setPassword(user.getPassword());
-                 x.setMyTodos(user.getMyTodos());
-                 return x;
-            }
-        }
-
-      //Update using stream code
-//        users.stream().filter(x -> x.getEmail().equals(user.getEmail()))
-//                .findFirst()
-//                .ifPresent( x-> {
-//                    x.setFirstName(user.getFirstName());
-//                    x.setLastName(user.getLastName());
-//                    x.setPassword(user.getPassword());
-//                    x.setMyTodos(user.getMyTodos());
-//
-//                });
-        return null;
-    }
-
-    @Override
-    public void deleteUser(User user) {
-        this.users.removeIf(u -> u.getEmail().equals(user.getEmail()));
-    }
-
-    @Override
-    public List<User> getAll() {
-        return this.users;
-    }
-
-}
