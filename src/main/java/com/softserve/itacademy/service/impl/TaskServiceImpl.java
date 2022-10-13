@@ -1,5 +1,6 @@
 package com.softserve.itacademy.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,28 +53,39 @@ public class TaskServiceImpl implements TaskService {
         if (task.getName() == null || task.getPriority() == null) {
             throw new RuntimeException("Task parameter is null!");
         }
-        boolean find = false;
 
         for (ToDo toDo : toDoService.getAll()) {
             if (toDo.getTasks().contains(task)) {
                 toDo.getTasks().get(toDo.getTasks().indexOf(task)).setPriority(task.getPriority());
                 toDoService.updateTodo(toDo);
-                find = true;
+                return task;
             }
         }
-        if (!find) {
-            throw new RuntimeException(String.format("Task %s not found!", task.getName()));
-        }
-        return task;
+        throw new RuntimeException(String.format("Task %s not found!", task.getName()));
     }
 
     public void deleteTask(Task task) {
-        // TODO
+        if (task == null) {
+            throw new RuntimeException("Task is null!");
+        }
+        boolean find = false;
+        for (ToDo toDo : toDoService.getAll()) {
+            if (toDo.getTasks().contains(task)) {
+                toDo.getTasks().remove(task);
+                toDoService.updateTodo(toDo);
+                return;
+            }
+        }
+
+        throw new RuntimeException(String.format("Task %s not found!", task.getName()));
     }
 
     public List<Task> getAll() {
-        // TODO
-        return null;
+        List<Task> tasks = new ArrayList<>();
+        for (ToDo toDo : toDoService.getAll()) {
+            tasks.addAll(toDo.getTasks());
+        }
+        return tasks;
     }
 
     public List<Task> getByToDo(ToDo todo) {
