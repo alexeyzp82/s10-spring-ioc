@@ -22,8 +22,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     public Task addTask(Task task, ToDo todo) {
-        // TODO
-        return null;
+        if (task == null) throw new RuntimeException("Task is null!");
+        if (task.getName() == null || task.getPriority() == null) throw new RuntimeException("Task parameter is null!");
+        if (todo == null || toDoService.getByUserTitle(todo.getOwner(), todo.getTitle()) == null) throw new RuntimeException("ToDo not found!");
+        boolean status = todo.getTasks().stream().anyMatch(t -> t.getName().equals(task.getName()));
+        if (!status) {
+            todo.getTasks().add(task);
+            return task;
+        } else {
+            throw  new RuntimeException(String.format("Task %s already exists!", task.getName()));
+        }
     }
 
     public Task updateTask(Task task) {
