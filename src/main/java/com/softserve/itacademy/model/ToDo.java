@@ -14,10 +14,9 @@ public class ToDo {
 
     private List<Task> tasks;
 
-    public ToDo(String title, LocalDateTime createdAt, User owner, List<Task> tasks) {
+    public ToDo(String title, List<Task> tasks) {
         this.title = title;
-        this.createdAt = createdAt;
-        this.owner = owner;
+        this.createdAt = LocalDateTime.now();
         this.tasks = tasks;
     }
 
