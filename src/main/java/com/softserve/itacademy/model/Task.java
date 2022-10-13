@@ -21,12 +21,20 @@ public class Task {
         return priority;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(name, task.name) && priority == task.priority;
+        return name.equals(task.name);
     }
 
     @Override
