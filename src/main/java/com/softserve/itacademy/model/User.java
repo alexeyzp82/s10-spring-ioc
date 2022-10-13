@@ -1,5 +1,6 @@
 package com.softserve.itacademy.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,12 +17,12 @@ public class User {
     private List<ToDo> myTodos;
 
     // Constructor(s)
-    public User(String firstName, String lastName,String email, String password, List<ToDo> userToDos){
+    public User(String firstName, String lastName, String email, String password){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email  = email;
         this.password  = password;
-        this.myTodos = userToDos;
+        this.myTodos = new ArrayList<>();
     }
 
     // getters, setters
