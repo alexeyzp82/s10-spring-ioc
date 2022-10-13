@@ -89,17 +89,29 @@ public class TaskServiceImpl implements TaskService {
     }
 
     public List<Task> getByToDo(ToDo todo) {
-        // TODO
-        return null;
+        return toDoService.getByUserTitle(todo.getOwner(), todo.getTitle()) != null ?  todo.getTasks() : null;
     }
 
     public Task getByToDoName(ToDo todo, String name) {
-        // TODO
+        if (getByToDo(todo) != null) {
+            return todo.getTasks()
+                    .stream()
+                    .filter(t -> t.getName().equals(name))
+                    .findFirst()
+                    .orElse(null);
+        }
         return null;
     }
 
     public Task getByUserName(User user, String name) {
-        // TODO
+        if (toDoService.getByUser(user) != null) {
+            return toDoService.getByUser(user)
+                    .stream()
+                    .flatMap(t -> t.getTasks().stream())
+                    .filter(t -> t.getName().equals(name))
+                    .findFirst()
+                    .orElse(null);
+        }
         return null;
     }
 
