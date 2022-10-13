@@ -1,6 +1,7 @@
 package com.softserve.itacademy.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,10 +15,11 @@ public class ToDo {
 
     private List<Task> tasks;
 
-    public ToDo(String title, List<Task> tasks) {
+    public ToDo(String title, User owner) {
         this.title = title;
         this.createdAt = LocalDateTime.now();
-        this.tasks = tasks;
+        this.owner = owner;
+        tasks = new ArrayList<>();
     }
 
     public String getTitle() {
