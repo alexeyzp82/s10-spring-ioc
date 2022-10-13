@@ -48,9 +48,9 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", priority=" + priority +
+        return "{" +
+                "'" + name + '\'' +
+                ", " + priority +
                 '}';
     }
 }
