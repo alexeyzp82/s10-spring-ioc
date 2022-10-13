@@ -66,4 +66,12 @@ public class ToDo {
     public int hashCode() {
         return Objects.hash(title);
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "'" + title + '\'' +
+                ", " + createdAt +
+                '}';
+    }
 }

@@ -106,4 +106,13 @@ public class User {
         return Objects.hash(/*firstName, lastName,*/email/*, password, myTodos*/);
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "'" + firstName + '\'' +
+                ", '" + lastName + '\'' +
+                ", '" + email + '\'' +
+                ", '" + password + '\'' +
+                '}';
+    }
 }
