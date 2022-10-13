@@ -31,9 +31,13 @@ public class TaskServiceImpl implements TaskService {
             throw new RuntimeException("Task parameter is null!");
         }
 
-        if (todo == null || toDoService.getByUserTitle(todo.getOwner(), todo.getTitle()) == null) {
-            throw new RuntimeException("ToDo not found!");
+        if (todo == null) {
+            throw new RuntimeException("ToDo is null!");
         }
+
+//        if (toDoService.getByUserTitle(todo.getOwner(), todo.getTitle()) == null) {
+//            throw new RuntimeException("ToDo not found!");
+//        }
 
         boolean isContains = todo.getTasks().stream().anyMatch(t -> t.equals(task));
 
