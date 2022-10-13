@@ -50,8 +50,8 @@ public class UserServiceTest {
     @DisplayName("Checks if valid user adds to the list of users.")
     @Test
     public void checkAddUser() {
-        User user = new User("Ben","Barnes","ben@mail.com","pass",null);
-        User expected = new User("Ben","Barnes","ben@mail.com","pass",null);
+        User user = new User("Ben","Barnes","ben@mail.com","pass");
+        User expected = new User("Ben","Barnes","ben@mail.com","pass");
         User actual = userService.addUser(user);
         Assertions.assertEquals(expected, actual, "Check message");
     }
@@ -59,8 +59,8 @@ public class UserServiceTest {
     @DisplayName("Adding user with already registered email.")
     @Test
     public void checkAddExistingUserWithException(){
-        User user = new User("Ivan","Berd","ivan@mail.com","pass",null);
-        User user2 = new User("IvanDUB","BerdDUB","ivan@mail.com","pass",null);
+        User user = new User("Ivan","Berd","ivan@mail.com","pass");
+        User user2 = new User("IvanDUB","BerdDUB","ivan@mail.com","pass");
         userService.addUser(user);
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             userService.addUser(user2);
@@ -82,10 +82,10 @@ public class UserServiceTest {
     @DisplayName("Check update of existent user.")
     @Test
     public void checkUpdateUser() {
-        User user1 = new User("Andrew","Collins","acollins@mail.com","pass",null);
-        User user2 = new User("Anna","Holland","anna@mail.com","pass",null);
-        User userUpd = new User("","Connar","acollins@mail.com","newPassword",null);
-        User expected = new User("Andrew","Connar","acollins@mail.com","newPassword",null);
+        User user1 = new User("Andrew","Collins","acollins@mail.com","pass");
+        User user2 = new User("Anna","Holland","anna@mail.com","pass");
+        User userUpd = new User("","Connar","acollins@mail.com","newPassword");
+        User expected = new User("Andrew","Connar","acollins@mail.com","newPassword");
         userService.addUser(user1);
         userService.addUser(user2);
         User actual = userService.updateUser(userUpd);
@@ -95,9 +95,9 @@ public class UserServiceTest {
     @DisplayName("Check update of non-existent user.")
     @Test
     public  void checkUpdateNonExistentUser() {
-        User user1 = new User("Olha","Clooney","olga23@mail.com","pass",null);
-        User user2 = new User("Iryna","Valley","iryna4646@mail.com","pass",null);
-        User userUpd = new User("Tonny","Connar","unknown@mail.com","newPassword",null);
+        User user1 = new User("Olha","Clooney","olga23@mail.com","pass");
+        User user2 = new User("Iryna","Valley","iryna4646@mail.com","pass");
+        User userUpd = new User("Tonny","Connar","unknown@mail.com","newPassword");
         userService.addUser(user1);
         userService.addUser(user2);
         User actual = userService.updateUser(userUpd);
@@ -108,8 +108,8 @@ public class UserServiceTest {
     @DisplayName("Delete  existing user.")
     @Test
     public  void checkDeleteValidUser() {
-        User user1 = new User("Taras","Pool","taras@mail.com","pass",null);
-        User user2 = new User("Mike","Musk","mike5674@mail.com","pass",null);
+        User user1 = new User("Taras","Pool","taras@mail.com","pass");
+        User user2 = new User("Mike","Musk","mike5674@mail.com","pass");
         userService.addUser(user1);
         userService.addUser(user2);
 
@@ -121,12 +121,12 @@ public class UserServiceTest {
     @DisplayName("Delete non-existing user.")
     @Test
     public  void checkDeleteNonExistentUser() {
-        User user1 = new User("Andrew","Collins","acollins@mail.com","pass",null);
-        User user2 = new User("Anna","Holland","anna@mail.com","pass",null);
+        User user1 = new User("Andrew","Collins","acollins@mail.com","pass");
+        User user2 = new User("Anna","Holland","anna@mail.com","pass");
         userService.addUser(user1);
         userService.addUser(user2);
         int sizeBeforeDelete  = userService.getAll().size();
-        User randomUser = new User("Harry","Johnson","john@mail.com","password",null);
+        User randomUser = new User("Harry","Johnson","john@mail.com","password");
         userService.deleteUser(randomUser);
         int sizeAfterDelete = userService.getAll().size();
         assertEquals(sizeBeforeDelete,sizeAfterDelete);
@@ -136,7 +136,7 @@ public class UserServiceTest {
     @Test
     public  void checkGetUserByEmail(){
         String emailToExtract = "ola@email.com";
-        User expected = new User("Ola","Burger","ola@email.com","pass",null);
+        User expected = new User("Ola","Burger","ola@email.com","pass");
         userService.addUser(expected);
         User actual = userService.getUserByEmail(emailToExtract);
         Assertions.assertEquals(expected,actual);
@@ -146,7 +146,7 @@ public class UserServiceTest {
     @Test
     public  void checkGetUserByWrongEmail(){
         String emailToExtract = "random@email.com";
-        User expected = new User("Mike","Vale","mike68754@email.com","pass",null);
+        User expected = new User("Mike","Vale","mike68754@email.com","pass");
         userService.addUser(expected);
         User actual = userService.getUserByEmail(emailToExtract);
         Assertions.assertNull(actual);
